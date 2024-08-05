@@ -1,4 +1,4 @@
-package ru.itsyga.telegramticketbot.controller;
+package ru.itsyga.telegramticketbot.controller.handler;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

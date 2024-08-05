@@ -5,6 +5,8 @@ import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsume
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.itsyga.telegramticketbot.controller.handler.DefaultHandler;
+import ru.itsyga.telegramticketbot.controller.handler.UpdateHandler;
 
 import java.util.List;
 
