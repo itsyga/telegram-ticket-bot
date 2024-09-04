@@ -33,11 +33,16 @@ public class RepositoryService {
                 });
     }
 
+    public void saveChatMessages(List<ChatMessage> chatMessages) {
+        chatMessageRepository.saveAll(chatMessages);
+    }
+
     public List<ChatMessage> findChatMessages(Long chatId) {
         return chatMessageRepository.findChatMessagesByChat_Id(chatId);
     }
 
+    @Transactional
     public void deleteChatMessages(Long chatId) {
-        chatMessageRepository.deleteChatMessagesByChat_Id(chatId);
+        chatMessageRepository.deleteChatMessages(chatId);
     }
 }
