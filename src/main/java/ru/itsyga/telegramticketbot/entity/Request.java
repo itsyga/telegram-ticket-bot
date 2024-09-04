@@ -31,7 +31,7 @@ public class Request implements Persistable<Long> {
     private LocalDate date;
 
     @Column(name = "passengers_count")
-    private int passengersCount;
+    private Integer passengersCount;
 
     public Request(Long id) {
         this.id = id;
