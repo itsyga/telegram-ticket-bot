@@ -33,6 +33,11 @@ public class RepositoryService {
                 });
     }
 
+    @Transactional
+    public void deleteChat(Long chatId) {
+        chatRepository.deleteChat(chatId);
+    }
+
     public void saveChatMessages(List<ChatMessage> chatMessages) {
         chatMessageRepository.saveAll(chatMessages);
     }
