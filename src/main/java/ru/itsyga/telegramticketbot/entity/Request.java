@@ -39,6 +39,6 @@ public class Request implements Persistable<Long> {
 
     @Override
     public boolean isNew() {
-        return true;
+        return departureId == null;
     }
 }
