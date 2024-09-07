@@ -50,15 +50,14 @@ public class MessageService implements MethodService {
         switch (currentState.getName()) {
             case "departure location search":
             case "arrival location search":
-                updateChatMessages(chat, null);
+                updateChatMessages(chat.getId(), null);
                 searchLocations(chat, msgText);
                 break;
         }
     }
 
     @Override
-    public void updateChatMessages(Chat chat, BotApiObject apiObject) {
-        Long chatId = chat.getId();
+    public void updateChatMessages(Long chatId, BotApiObject apiObject) {
         List<ChatMessage> messages;
         if (!(messages = repositoryService.findChatMessages(chatId)).isEmpty()) {
             repositoryService.deleteChatMessages(chatId);
