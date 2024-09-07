@@ -26,11 +26,25 @@ public class RepositoryService {
     public Chat findOrCreateChat(Long chatId) {
         return chatRepository.findById(chatId)
                 .orElseGet(() -> {
-                    State firstState = stateRepository.findStates().getFirst();
+                    State firstState = getFirstState();
                     Chat chat = chatRepository.save(new Chat(chatId, firstState));
                     requestRepository.save(new Request(chatId));
                     return chat;
                 });
+    }
+
+    @Transactional
+    public Chat updateChatState(Chat chat) {
+        List<State> states = stateRepository.findStates();
+        int currentIndex = states.indexOf(chat.getState());
+        chat.setState(states.get(currentIndex + 1));
+        return chatRepository.save(chat);
+    }
+
+    @Transactional
+    public Chat resetChatState(Chat chat) {
+        chat.setState(getFirstState());
+        return chatRepository.save(chat);
     }
 
     @Transactional
@@ -49,5 +63,13 @@ public class RepositoryService {
     @Transactional
     public void deleteChatMessages(Long chatId) {
         chatMessageRepository.deleteChatMessages(chatId);
+    }
+
+    public void updateRequest(Request request) {
+        requestRepository.save(request);
+    }
+
+    private State getFirstState() {
+        return stateRepository.findStates().getFirst();
     }
 }
