@@ -11,6 +11,7 @@ import ru.itsyga.telegramticketbot.repository.ChatMessageRepository;
 import ru.itsyga.telegramticketbot.repository.ChatRepository;
 import ru.itsyga.telegramticketbot.repository.RequestRepository;
 import ru.itsyga.telegramticketbot.repository.StateRepository;
+import ru.itsyga.telegramticketbot.util.StateAction;
 
 import java.util.List;
 
@@ -34,16 +35,14 @@ public class RepositoryService {
     }
 
     @Transactional
-    public Chat updateChatState(Chat chat) {
+    public Chat updateChatState(Chat chat, StateAction stateAction) {
         List<State> states = stateRepository.findStates();
         int currentIndex = states.indexOf(chat.getState());
-        chat.setState(states.get(currentIndex + 1));
-        return chatRepository.save(chat);
-    }
-
-    @Transactional
-    public Chat resetChatState(Chat chat) {
-        chat.setState(getFirstState());
+        switch (stateAction) {
+            case NEXT_STATE -> chat.setState(states.get(currentIndex + 1));
+            case PREVIOUS_STATE -> chat.setState(states.get(currentIndex - 1));
+            case RESET_STATE -> chat.setState(states.getFirst());
+        }
         return chatRepository.save(chat);
     }
 

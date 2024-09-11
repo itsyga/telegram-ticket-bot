@@ -11,6 +11,7 @@ import ru.itsyga.telegramticketbot.director.SendMessageDirector;
 import ru.itsyga.telegramticketbot.entity.Chat;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
 import ru.itsyga.telegramticketbot.entity.Request;
+import ru.itsyga.telegramticketbot.util.StateAction;
 
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class CallbackService implements MethodService {
             request.setArrivalId(callbackData);
         }
         repositoryService.updateRequest(request);
-        chat = repositoryService.updateChatState(chat);
+        chat = repositoryService.updateChatState(chat, StateAction.NEXT_STATE);
         String reply = chat.getState().getPhrase().getText();
         updateChatMessages(chatId, callbackQuery);
         botClient.sendMethod(sendMessageDirector.buildWithBaseKeyboard(chatId, reply));
