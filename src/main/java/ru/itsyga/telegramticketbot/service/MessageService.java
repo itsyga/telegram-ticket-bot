@@ -3,6 +3,7 @@ package ru.itsyga.telegramticketbot.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.interfaces.BotApiObject;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import ru.itsyga.telegramticketbot.client.TelegramBotClient;
 import ru.itsyga.telegramticketbot.client.TicketApiClient;
@@ -13,6 +14,7 @@ import ru.itsyga.telegramticketbot.entity.ChatMessage;
 import ru.itsyga.telegramticketbot.entity.State;
 import ru.itsyga.telegramticketbot.model.Location;
 import ru.itsyga.telegramticketbot.util.Reply;
+import ru.itsyga.telegramticketbot.util.StateAction;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +42,23 @@ public class MessageService implements MethodService {
                 && currentState.getName().equals("departure location search")) {
             String reply = currentState.getPhrase().getText();
             botClient.sendMethod(sendMessageDirector.build(chatId, reply));
+            return;
+        } else if (msgText.equals("Вернуться назад")) {
+            chat = repositoryService.updateChatState(chat, StateAction.PREVIOUS_STATE);
+            currentState = chat.getState();
+            String reply = currentState.getPhrase().getText();
+            SendMessage sendMessage = currentState.getName().equals("departure location search") ?
+                    sendMessageDirector.buildWithRemoveKeyboard(chatId, reply) :
+                    sendMessageDirector.buildWithBaseKeyboard(chatId, reply);
+            botClient.sendMethod(sendMessage);
+            updateChatMessages(chatId, null);
+            return;
+        } else if (msgText.equals("Начать заново")) {
+            chat = repositoryService.updateChatState(chat, StateAction.RESET_STATE);
+            currentState = chat.getState();
+            String reply = currentState.getPhrase().getText();
+            botClient.sendMethod(sendMessageDirector.buildWithRemoveKeyboard(chatId, reply));
+            updateChatMessages(chatId, null);
             return;
         }
 
