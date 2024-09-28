@@ -11,11 +11,15 @@ import ru.itsyga.telegramticketbot.director.DeleteMessageDirector;
 import ru.itsyga.telegramticketbot.director.SendMessageDirector;
 import ru.itsyga.telegramticketbot.entity.Chat;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
+import ru.itsyga.telegramticketbot.entity.Request;
 import ru.itsyga.telegramticketbot.entity.State;
 import ru.itsyga.telegramticketbot.model.Location;
 import ru.itsyga.telegramticketbot.util.Reply;
 import ru.itsyga.telegramticketbot.util.StateAction;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -54,9 +58,10 @@ public class MessageService implements MethodService {
             updateChatMessages(chatId, null);
             return;
         } else if (msgText.equals("Начать заново")) {
-            chat = repositoryService.updateChatState(chat, StateAction.RESET_STATE);
-            currentState = chat.getState();
-            String reply = currentState.getPhrase().getText();
+            String reply = repositoryService.updateChatState(chat, StateAction.RESET_STATE)
+                    .getState()
+                    .getPhrase()
+                    .getText();
             botClient.sendMethod(sendMessageDirector.buildWithRemoveKeyboard(chatId, reply));
             updateChatMessages(chatId, null);
             return;
@@ -72,6 +77,9 @@ public class MessageService implements MethodService {
                 updateChatMessages(chat.getId(), null);
                 searchLocations(chat, msgText);
                 break;
+            case "date pick":
+                setTripDate(chat, msgText);
+                break;
         }
     }
 
@@ -85,6 +93,26 @@ public class MessageService implements MethodService {
                     .collect(Collectors.toSet());
             botClient.sendMethod(deleteMessageDirector.build(chatId, messageIds));
         }
+    }
+
+    private void setTripDate(Chat chat, String msgText) {
+        Long chatId = chat.getId();
+        Request request = chat.getRequest();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate tripDate;
+        try {
+            tripDate = LocalDate.parse(msgText, formatter);
+        } catch (DateTimeParseException e) {
+            botClient.sendMethod(sendMessageDirector.build(chatId, Reply.UNSUPPORTED_DATE_FORMAT.getText()));
+            return;
+        }
+        request.setDate(tripDate);
+        repositoryService.updateRequest(request);
+        String reply = repositoryService.updateChatState(chat, StateAction.NEXT_STATE)
+                .getState()
+                .getPhrase()
+                .getText();
+        botClient.sendMethod(sendMessageDirector.build(chatId, reply));
     }
 
     private void searchLocations(Chat chat, String userRequest) {

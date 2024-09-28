@@ -11,6 +11,7 @@ import ru.itsyga.telegramticketbot.director.SendMessageDirector;
 import ru.itsyga.telegramticketbot.entity.Chat;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
 import ru.itsyga.telegramticketbot.entity.Request;
+import ru.itsyga.telegramticketbot.entity.State;
 import ru.itsyga.telegramticketbot.util.StateAction;
 
 import java.util.List;
@@ -37,15 +38,18 @@ public class CallbackService implements MethodService {
     private void updateDepartureOrArrivalLocationId(Chat chat, CallbackQuery callbackQuery) {
         Long chatId = chat.getId();
         Request request = chat.getRequest();
+        State currentState = chat.getState();
         String callbackData = callbackQuery.getData();
-        if (request.getDepartureId() == null) {
+        if (currentState.getName().equals("departure location search")) {
             request.setDepartureId(callbackData);
         } else {
             request.setArrivalId(callbackData);
         }
         repositoryService.updateRequest(request);
-        chat = repositoryService.updateChatState(chat, StateAction.NEXT_STATE);
-        String reply = chat.getState().getPhrase().getText();
+        String reply = repositoryService.updateChatState(chat, StateAction.NEXT_STATE)
+                .getState()
+                .getPhrase()
+                .getText();
         updateChatMessages(chatId, callbackQuery);
         botClient.sendMethod(sendMessageDirector.buildWithBaseKeyboard(chatId, reply));
     }
