@@ -1,4 +1,4 @@
-package ru.itsyga.telegramticketbot.service;
+package ru.itsyga.telegramticketbot.service.method;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import ru.itsyga.telegramticketbot.entity.Chat;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
 import ru.itsyga.telegramticketbot.entity.Request;
 import ru.itsyga.telegramticketbot.entity.State;
+import ru.itsyga.telegramticketbot.service.RepositoryService;
 import ru.itsyga.telegramticketbot.util.StateAction;
 
 import java.util.List;

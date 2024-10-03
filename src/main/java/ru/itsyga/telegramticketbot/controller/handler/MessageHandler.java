@@ -6,7 +6,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-import ru.itsyga.telegramticketbot.service.MethodService;
+import ru.itsyga.telegramticketbot.service.method.MethodService;
 
 @Order(1)
 @Component

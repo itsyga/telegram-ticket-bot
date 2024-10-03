@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberUpdated;
-import ru.itsyga.telegramticketbot.service.MethodService;
+import ru.itsyga.telegramticketbot.service.method.MethodService;
 
 @Component
 @RequiredArgsConstructor

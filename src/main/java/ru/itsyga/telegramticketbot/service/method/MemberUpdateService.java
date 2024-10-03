@@ -1,4 +1,4 @@
-package ru.itsyga.telegramticketbot.service;
+package ru.itsyga.telegramticketbot.service.method;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberUpdated;
 import ru.itsyga.telegramticketbot.client.TelegramBotClient;
 import ru.itsyga.telegramticketbot.director.DeleteMessageDirector;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
+import ru.itsyga.telegramticketbot.service.RepositoryService;
 
 import java.util.List;
 import java.util.Set;
