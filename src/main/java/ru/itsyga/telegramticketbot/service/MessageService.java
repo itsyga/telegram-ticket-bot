@@ -80,6 +80,9 @@ public class MessageService implements MethodService {
             case "date pick":
                 setTripDate(chat, msgText);
                 break;
+            case "passengers count pick":
+                setPassengersCount(chat, msgText);
+                break;
         }
     }
 
@@ -93,6 +96,20 @@ public class MessageService implements MethodService {
                     .collect(Collectors.toSet());
             botClient.sendMethod(deleteMessageDirector.build(chatId, messageIds));
         }
+    }
+
+    private void setPassengersCount(Chat chat, String msgText) {
+        Long chatId = chat.getId();
+        Request request = chat.getRequest();
+        int passengersCount;
+        try {
+            passengersCount = Integer.parseInt(msgText);
+        } catch (NumberFormatException e) {
+            botClient.sendMethod(sendMessageDirector.build(chatId, Reply.UNSUPPORTED_PASSENGERS_COUNT_FORMAT.getText()));
+            return;
+        }
+        request.setPassengersCount(passengersCount);
+        repositoryService.updateRequest(request);
     }
 
     private void setTripDate(Chat chat, String msgText) {
