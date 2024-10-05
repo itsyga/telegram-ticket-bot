@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.interfaces.BotApiObject;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import ru.itsyga.telegramticketbot.client.TelegramBotClient;
 import ru.itsyga.telegramticketbot.client.TicketApiClient;
-import ru.itsyga.telegramticketbot.command.CommandExecutor;
 import ru.itsyga.telegramticketbot.director.SendMessageDirector;
 import ru.itsyga.telegramticketbot.entity.Chat;
 import ru.itsyga.telegramticketbot.entity.ChatMessage;
@@ -15,6 +14,7 @@ import ru.itsyga.telegramticketbot.entity.State;
 import ru.itsyga.telegramticketbot.model.Location;
 import ru.itsyga.telegramticketbot.service.RepositoryService;
 import ru.itsyga.telegramticketbot.service.chatmessageupdate.ChatMessageUpdater;
+import ru.itsyga.telegramticketbot.textcommand.TextCommand;
 import ru.itsyga.telegramticketbot.util.Reply;
 import ru.itsyga.telegramticketbot.util.StateAction;
 
@@ -34,17 +34,17 @@ public class MessageService implements MethodService {
     private final RepositoryService repositoryService;
     private final SendMessageDirector sendMessageDirector;
     private final ChatMessageUpdater chatMessageUpdater;
-    private final Map<String, CommandExecutor> commandExecutorMap;
+    private final Map<String, TextCommand> textCommandMap;
 
     public MessageService(TicketApiClient apiClient, TelegramBotClient botClient, RepositoryService repositoryService,
-                          SendMessageDirector sendMessageDirector, List<CommandExecutor> commandExecutors,
+                          SendMessageDirector sendMessageDirector, List<TextCommand> textCommands,
                           @Qualifier("defaultChatMessageUpdater") ChatMessageUpdater chatMessageUpdater) {
         this.apiClient = apiClient;
         this.botClient = botClient;
         this.repositoryService = repositoryService;
         this.sendMessageDirector = sendMessageDirector;
-        this.commandExecutorMap = commandExecutors.stream()
-                .collect(Collectors.toMap(CommandExecutor::getCommandName, commandExecutor -> commandExecutor));
+        this.textCommandMap = textCommands.stream()
+                .collect(Collectors.toMap(TextCommand::getCommandText, textCommand -> textCommand));
         this.chatMessageUpdater = chatMessageUpdater;
     }
 
@@ -56,9 +56,9 @@ public class MessageService implements MethodService {
         Chat chat = repositoryService.findOrCreateChat(chatId);
         State currentState = chat.getState();
 
-        CommandExecutor executor;
-        if ((executor = commandExecutorMap.get(msgText)) != null) {
-            executor.execute(chat);
+        TextCommand textCommand;
+        if ((textCommand = textCommandMap.get(msgText)) != null) {
+            textCommand.execute(chat);
             return;
         }
 

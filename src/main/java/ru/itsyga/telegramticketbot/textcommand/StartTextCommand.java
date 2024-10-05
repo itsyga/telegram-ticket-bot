@@ -1,4 +1,4 @@
-package ru.itsyga.telegramticketbot.command;
+package ru.itsyga.telegramticketbot.textcommand;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import ru.itsyga.telegramticketbot.entity.State;
 
 @Component
 @RequiredArgsConstructor
-public class StartCommandExecutor implements CommandExecutor {
+public class StartTextCommand implements TextCommand {
     private final TelegramBotClient botClient;
     private final SendMessageDirector sendMessageDirector;
 
@@ -23,7 +23,7 @@ public class StartCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public String getCommandName() {
+    public String getCommandText() {
         return "/start";
     }
 }
