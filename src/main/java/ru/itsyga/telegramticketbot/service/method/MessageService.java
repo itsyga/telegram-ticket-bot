@@ -18,6 +18,7 @@ import ru.itsyga.telegramticketbot.service.chatmessageupdate.ChatMessageUpdater;
 import ru.itsyga.telegramticketbot.util.Reply;
 import ru.itsyga.telegramticketbot.util.StateAction;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -109,8 +110,14 @@ public class MessageService implements MethodService {
         LocalDate tripDate;
         try {
             tripDate = LocalDate.parse(msgText, formatter);
+            if (tripDate.isBefore(LocalDate.now())) {
+                throw new DateTimeException("An elapsed date has been entered");
+            }
         } catch (DateTimeParseException e) {
             botClient.sendMethod(sendMessageDirector.build(chatId, Reply.UNSUPPORTED_DATE_FORMAT.getText()));
+            return;
+        } catch (DateTimeException e) {
+            botClient.sendMethod(sendMessageDirector.build(chatId, Reply.INCORRECT_TRIP_DATE.getText()));
             return;
         }
         request.setDate(tripDate);
