@@ -1,14 +1,14 @@
 package ru.itsyga.telegramticketbot.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@ToString
 @NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "message")
 public class ChatMessage {
     @Id

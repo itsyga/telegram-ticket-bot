@@ -4,7 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDate;
@@ -12,9 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@ToString
 @NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "request")
 public class Request implements Persistable<Long> {
     @Id

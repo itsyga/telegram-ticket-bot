@@ -1,23 +1,20 @@
 package ru.itsyga.telegramticketbot.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
 @Entity
-@ToString
 @NoArgsConstructor
-@EqualsAndHashCode
 @Table(name = "chat")
 public class Chat implements Persistable<Long> {
     @Id
     @Column(name = "chat_id")
     private Long id;
-
-    @Transient
-    private boolean isNew;
 
     @OneToOne
     @PrimaryKeyJoinColumn

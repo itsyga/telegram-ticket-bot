@@ -1,16 +1,12 @@
 package ru.itsyga.telegramticketbot.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
-@ToString
-@EqualsAndHashCode
 @Table(name = "state")
 public class State {
     @Id
