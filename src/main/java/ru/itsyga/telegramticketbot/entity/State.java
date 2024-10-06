@@ -1,12 +1,14 @@
 package ru.itsyga.telegramticketbot.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 @Table(name = "state")
 public class State {
     @Id
@@ -19,5 +21,6 @@ public class State {
 
     @OneToOne
     @PrimaryKeyJoinColumn
+    @EqualsAndHashCode.Exclude
     private Phrase phrase;
 }
