@@ -36,8 +36,7 @@ public class LocationSearchStateCommand implements StateCommand {
         if ((locations = apiClient.findLocations(msgText)) == null) {
             botClient.sendMethod(sendMessageDirector.build(chatId, Reply.SERVICE_UNAVAILABLE.getText()));
             return;
-        }
-        if (locations.isEmpty()) {
+        } else if (locations.isEmpty()) {
             botClient.sendMethod(sendMessageDirector.build(chatId, Reply.UNSUCCESSFUL_SEARCH.getText()));
             return;
         }
