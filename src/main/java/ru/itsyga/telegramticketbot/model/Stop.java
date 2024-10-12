@@ -20,4 +20,8 @@ public class Stop {
 
     @JsonProperty("datetime")
     private LocalDateTime dateTime;
+
+    public String getStopNameWithDescription() {
+        return (description != null && !description.isEmpty()) ? name + " (" + description + ")" : name;
+    }
 }
