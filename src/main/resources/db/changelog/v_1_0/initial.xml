@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1729884198852-1" author="itsyga">
+        <createTable tableName="chat">
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_chat"/>
+            </column>
+            <column name="state_id" type="SMALLINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1729884198852-2" author="itsyga">
+        <createTable tableName="message">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_message"/>
+            </column>
+            <column name="message_id" type="INT"/>
+            <column name="message_text" type="VARCHAR(30)"/>
+            <column name="chat_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1729884198852-3" author="itsyga">
+        <createTable tableName="phrase">
+            <column name="phrase_id" type="SMALLINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_phrase"/>
+            </column>
+            <column name="phrase_text" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1729884198852-4" author="itsyga">
+        <createTable tableName="request">
+            <column name="request_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_request"/>
+            </column>
+            <column name="departure_id" type="VARCHAR(15)"/>
+            <column name="arrival_id" type="VARCHAR(15)"/>
+            <column name="date" type="DATE"/>
+            <column name="passengers_count" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1729884198852-5" author="itsyga">
+        <createTable tableName="state">
+            <column name="state_id" type="SMALLINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_state"/>
+            </column>
+            <column name="state_name" type="VARCHAR(30)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1729884198852-6" author="itsyga">
+        <addForeignKeyConstraint baseTableName="request" baseColumnNames="request_id" referencedTableName="chat"
+                                 referencedColumnNames="chat_id" constraintName="fk_request_on_chat"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="1729884198852-7" author="itsyga">
+        <addForeignKeyConstraint baseColumnNames="state_id" baseTableName="chat" constraintName="fk_chat_on_state"
+                                 referencedColumnNames="state_id" referencedTableName="state"/>
+    </changeSet>
+    <changeSet id="1729884198852-8" author="itsyga">
+        <addForeignKeyConstraint baseColumnNames="chat_id" baseTableName="message" constraintName="fk_message_on_chat"
+                                 referencedColumnNames="chat_id" referencedTableName="chat"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="1729884198852-9" author="itsyga">
+        <addForeignKeyConstraint baseTableName="phrase" baseColumnNames="phrase_id" referencedTableName="state"
+                                 referencedColumnNames="state_id" constraintName="fk_phrase_on_state"/>
+    </changeSet>
+</databaseChangeLog>
