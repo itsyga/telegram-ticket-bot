@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.itsyga</groupId>
     <artifactId>telegram-ticket-bot</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>telegram-ticket-bot</name>
     <properties>
         <java.version>21</java.version>
@@ -44,6 +44,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
