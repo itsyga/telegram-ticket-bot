@@ -13,10 +13,9 @@ import lombok.Setter;
 public class State {
     @Id
     @Column(name = "state_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
-    @Column(name = "state_name")
+    @Column(name = "state_name", length = 30)
     private String name;
 
     @OneToOne

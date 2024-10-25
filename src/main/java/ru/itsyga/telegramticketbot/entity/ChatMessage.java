@@ -13,13 +13,13 @@ import lombok.Setter;
 public class ChatMessage {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @Column(name = "message_id")
     private Integer messageId;
 
-    @Column(name = "message_text")
+    @Column(name = "message_text", length = 30)
     private String messageText;
 
     @ManyToOne(fetch = FetchType.LAZY)
